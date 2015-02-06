@@ -104,6 +104,7 @@ button:focus {
 			request.responseType = 'arraybuffer';
 
 			request.onload = function() {
+				alert(_this.context);
 				_this.context.decodeAudioData(
 					request.response,
 					function(buffer) {
@@ -155,6 +156,7 @@ button:focus {
 	};
 	
 	window.addEventListener('load', function(){
+		alert('load');
 		drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
 		drumObj.kick.load();
 
