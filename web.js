@@ -16,10 +16,10 @@ app.get('/', function (req, res) {
 });
 
 // Herokuは下記を入れないとSocket.ioが動かない情報がWebにあったが、なくても動くもよう(WebSocketに対応されたからか)
-io.configure(function () { 
-  io.set("transports", ["xhr-polling"]); 
-  io.set("polling duration", 10); 
-});
+// io.configure(function () { 
+//   io.set("transports", ["xhr-polling"]); 
+//   io.set("polling duration", 10); 
+// });
 
 // io.set('log level', 1); // 自動で出るデバック情報を出さない(ローカルでデバックする際に使用)
 
