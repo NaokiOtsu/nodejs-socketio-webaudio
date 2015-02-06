@@ -65,12 +65,13 @@ button:focus {
 	<button id="hat"> hat </button>
 	<button id="snare"> snare </button>
 
-<!-- <script src="/socket.io/socket.io.js"></script> -->
+<script src="/socket.io/socket.io.js"></script>
 <script>
 ;(function (window, undefined) {
 	
 	// socket.ioに接続する
-	// var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/');
+	// var socketio = io.connect('http://localhost:8000'); // localで試す時
+	var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/');
 	
 	var drumObj = {}; // ドラムのbutton、音声情報を格納するObject
 	
@@ -102,9 +103,6 @@ button:focus {
 			var request = new XMLHttpRequest();
 			request.open('get', url, true);
 			request.responseType = 'arraybuffer';
-			alert("url: "+url);
-			alert("request: "+request);
-			alert("this: "+this);
 
 			request.onload = function() {
 				_this.context.decodeAudioData(
@@ -138,13 +136,13 @@ button:focus {
 				this.className = 'tap';
 				
 				// socket.ioで全デバイスで同期させる為、ここでは音は鳴らさない
-				var source = context.createBufferSource();
-				source.buffer = _this.buffer;
-				source.connect(context.destination);
-				source.start(0);
+				// var source = context.createBufferSource();
+				// source.buffer = _this.buffer;
+				// source.connect(context.destination);
+				// source.start(0);
 				
 				// クライアントからサーバーにボタンidを送る
-				// socketio.emit("emit_from_client", this.id);
+				socketio.emit("emit_from_client", this.id);
 			});
 			_this.ele.addEventListener(eventNames.end, function() {
 				this.className = '';
@@ -157,29 +155,26 @@ button:focus {
 		}
 	};
 	
-	window.addEventListener('load', function(){
-		alert('load');
-		drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
-		drumObj.kick.load();
+	drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
+	drumObj.kick.load();
 
-		drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
-		drumObj.cymbal.load();
+	drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
+	drumObj.cymbal.load();
 
-		drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
-		drumObj.hat.load();
+	drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
+	drumObj.hat.load();
 
-		drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
-		drumObj.snare.load();
-	});
+	drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
+	drumObj.snare.load();
 	
 	// サーバーから "emit_from_server" が送られてくるのを監視
-	// socketio.on("emit_from_server", function(id){
-	// 	// サーバーから返されたid(buttonのid名)から音声を再生
-	// 	var source = drumObj[id].context.createBufferSource();
-	// 	source.buffer = drumObj[id].buffer;
-	// 	source.connect(drumObj[id].context.destination);
-	// 	source.start(0);
-	// });
+	socketio.on("emit_from_server", function(id){
+		// サーバーから返されたid(buttonのid名)から音声を再生
+		var source = drumObj[id].context.createBufferSource();
+		source.buffer = drumObj[id].buffer;
+		source.connect(drumObj[id].context.destination);
+		source.start(0);
+	});
 		
 }(this));
 </script>
