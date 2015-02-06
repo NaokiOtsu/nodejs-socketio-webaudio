@@ -102,9 +102,11 @@ button:focus {
 			var request = new XMLHttpRequest();
 			request.open('get', url, true);
 			request.responseType = 'arraybuffer';
+			alert("url: "+url);
+			alert("request: "+request);
+			alert("this: "+this);
 
 			request.onload = function() {
-				alert(_this.context);
 				_this.context.decodeAudioData(
 					request.response,
 					function(buffer) {
