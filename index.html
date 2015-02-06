@@ -105,6 +105,7 @@ button:focus {
 			request.responseType = 'arraybuffer';
 
 			request.onload = function() {
+				alert(request.response);
 				_this.context.decodeAudioData(
 					request.response,
 					function(buffer) {
