@@ -1,8 +1,7 @@
 var express = require('express');
 	app = express(),
 	server = require('http').createServer(app),
-	path = require('path'),
-	io = require('socket.io').listen(server);
+	path = require('path');
 
 server.listen(process.env.PORT || 8000);
 
@@ -14,6 +13,8 @@ app.use(express.static(path.join(__dirname, '/')));
 app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
+
+var io = require('socket.io').listen(server);
 
 // Herokuは下記を入れないとSocket.ioが動かない情報がWebにあったが、なくても動くもよう(WebSocketに対応されたからか)
 // io.configure(function () { 

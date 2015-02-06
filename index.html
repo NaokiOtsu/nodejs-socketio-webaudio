@@ -154,17 +154,19 @@ button:focus {
 		}
 	};
 	
-	drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
-	drumObj.kick.load();
+	window.addEventListener('load', function(){
+		drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
+		drumObj.kick.load();
 
-	drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
-	drumObj.cymbal.load();
+		drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
+		drumObj.cymbal.load();
 
-	drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
-	drumObj.hat.load();
+		drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
+		drumObj.hat.load();
 
-	drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
-	drumObj.snare.load();
+		drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
+		drumObj.snare.load();
+	});
 	
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	// socketio.on("emit_from_server", function(id){
