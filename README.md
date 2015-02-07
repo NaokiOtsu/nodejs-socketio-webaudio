@@ -13,9 +13,9 @@ cd nodejs-socketio-webaudio
 npm install
 node web.js
 ```
-access to http://localhost:8000  
+access to [http://localhost:8000](http://localhost:8000)  
 
-※ index.htmlのこちらのコメントを外してローカルにconnectする  
+※ index.htmlのこちらのコメントを外してローカルにconnectさせる(Line119)  
 ```
-Line119. // var socketio = io.connect('http://localhost:8000');
+// var socketio = io.connect('http://localhost:8000');
 ```
