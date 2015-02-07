@@ -164,7 +164,7 @@ button:focus {
 				
 				_this.source = context.createBufferSource();
 				_this.source.buffer = _this.buffer;
-				_this.source.connect(context.destination);
+				// _this.source.connect(context.destination);
 				// source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
 				
 				// クライアントからサーバーにボタンidを送る
@@ -198,7 +198,7 @@ button:focus {
 		// サーバーから返されたid(buttonのid名)から音声を再生
 		// var source = drumObj[id].context.createBufferSource();
 		// source.buffer = drumObj[id].buffer;
-		// source.connect(drumObj[id].context.destination);
+		drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
 		
 		// ポップアップを表示
