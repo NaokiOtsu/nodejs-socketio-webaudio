@@ -55,6 +55,40 @@ button:focus {
 	top: 130px;
 	right: 0;
 }
+#result-wrapper {
+	opacity: 0;
+	color: #ffff00;
+	text-align: center;
+	width: 200px;
+	margin-left: -100px;
+	padding: 20px 0;
+	position: absolute;
+	top: 30px;
+	left: 50%;
+	pointer-events: none;
+	background-color: rgba(0,0,0,0.5);
+	-webkit-border-radius: 5px;
+}
+#result-wrapper.popup {
+	-webkit-animation: popup 0.6s linear 1;
+}
+@-webkit-keyframes popup {
+	0% {
+		opacity: 0;
+		-webkit-transform: scale3d(0.9, 0.9, 0.9);
+		-webkit-transform: scale(0.9, 0.9); 
+	}
+	5% {
+		opacity: 1;
+		-webkit-transform: scale3d(1, 1, 1);
+		-webkit-transform: scale(1, 1);
+	}
+	100% {
+		opacity: 0;
+		-webkit-transform: scale3d(1.1, 1.1, 1.1);
+		-webkit-transform: scale(1.1, 1.1); 
+	}
+}
 
 </style>
 </head>
@@ -64,6 +98,7 @@ button:focus {
 	<button id="cymbal"> cymbal </button>
 	<button id="hat"> hat </button>
 	<button id="snare"> snare </button>
+	<div id="result-wrapper"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -83,6 +118,8 @@ button:focus {
 		end:   isTouchDevice ? 'touchend'   : 'mouseup',
 		click: 'click'
 	};
+	
+	var resultWrapper = document.getElementById('result-wrapper');
 
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -114,7 +151,6 @@ button:focus {
 							return;
 						}
 						_this.buffer = buffer;
-						console.log('buffer: '+buffer);
 						_this.events();
 					},
 					function(error) {
@@ -136,6 +172,7 @@ button:focus {
 			_this.ele.addEventListener(eventNames.start, function() {
 				this.className = '';
 				this.className = 'tap';
+				resultWrapper.className = "";
 				
 				// socket.ioで全デバイスで同期させる為、ここでは再生しない
 				// var source = context.createBufferSource();
@@ -160,14 +197,14 @@ button:focus {
 	drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
 	drumObj.kick.load();
 
-	// drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
-	// drumObj.cymbal.load();
+	drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
+	drumObj.cymbal.load();
 
-	// drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
-	// drumObj.hat.load();
+	drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
+	drumObj.hat.load();
 
-	// drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
-	// drumObj.snare.load();
+	drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
+	drumObj.snare.load();
 	
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
@@ -176,6 +213,10 @@ button:focus {
 		source.buffer = drumObj[id].buffer;
 		source.connect(drumObj[id].context.destination);
 		source.start(0);
+		
+		// ポップアップを表示
+		resultWrapper.className = "popup";
+		resultWrapper.innerHTML = id;
 	});
 		
 }(this));
