@@ -105,7 +105,6 @@ button:focus {
 			request.responseType = 'arraybuffer';
 
 			request.onload = function() {
-				console.log(request.response);
 				_this.context.decodeAudioData(
 					request.response,
 					function(buffer) {
@@ -114,6 +113,7 @@ button:focus {
 							return;
 						}
 						_this.buffer = buffer;
+						console.log('buffer: '+buffer);
 						_this.events();
 					},
 					function(error) {
@@ -136,7 +136,7 @@ button:focus {
 				this.className = '';
 				this.className = 'tap';
 				
-				// socket.ioで全デバイスで同期させる為、ここでは音は鳴らさない
+				// socket.ioで全デバイスで同期させる為、ここでは再生しない
 				// var source = context.createBufferSource();
 				// source.buffer = _this.buffer;
 				// source.connect(context.destination);
