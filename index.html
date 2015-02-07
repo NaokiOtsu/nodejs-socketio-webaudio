@@ -76,6 +76,18 @@ button:focus {
 	5% { opacity: 1; -webkit-transform: scale3d(1, 1, 1); -webkit-transform: scale(1, 1); }
 	100% { opacity: 0; -webkit-transform: scale3d(1.1, 1.1, 1.1); -webkit-transform: scale(1.1, 1.1); }
 }
+#start {
+	color: #fff;
+	text-align: center;
+	width: 100px;
+	padding: 10px;
+	margin-left: -50px;
+	position: absolute;
+	top: 50px;
+	left: 50%;
+	background-color: #333;
+}
+.hidden { display: none; }
 
 </style>
 </head>
@@ -86,6 +98,7 @@ button:focus {
 	<button id="hat"> hat </button>
 	<button id="snare"> snare </button>
 	<div id="result"></div>
+	<div id="start">start!!</div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -109,6 +122,15 @@ button:focus {
 	
 	var result = document.getElementById('result');　// ポップアップ用DOM
 
+	var start = document.getElementById('start');
+	start.addEventListener("click", function(){
+		drumObj.kick.play();
+		drumObj.cymbal.play();
+		drumObj.hat.play();
+		drumObj.snare.play();
+		this.className = 'hidden';
+	});
+	
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
 		try {
@@ -178,6 +200,15 @@ button:focus {
 		load: function() {
 			var _this = this;
 			_this.loadBuffer(_this.url);
+		},
+		
+		play: function () {
+			var _this = this;
+			
+			_this.source = _this.context.createBufferSource();
+			_this.source.buffer = _this.buffer;
+			_this.source.connect(_this.context.destination);
+			_this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
 		}
 	};
 	
