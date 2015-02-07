@@ -21,7 +21,7 @@ app.get('/', function (req, res) {
 //   io.set("polling duration", 10); 
 // });
 
-// io.set('log level', 1); // 自動で出るデバック情報を出さない(ローカルでデバックする際に使用)
+io.set('log level', 1); // 自動で出るデバック情報を出さない(ローカルでデバックする際に使用)
 
 // クライアント(index.html)からの接続を監視
 io.sockets.on("connection", function (socket) {

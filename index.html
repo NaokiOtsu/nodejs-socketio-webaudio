@@ -71,7 +71,8 @@ button:focus {
 	
 	// socket.ioに接続する
 	// var socketio = io.connect('http://localhost:8000'); // localで試す時
-	var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/');
+	var socketio = io.connect('http://172.25.0.71:8000');
+	// var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/');
 	
 	var drumObj = {}; // ドラムのbutton、音声情報を格納するObject
 	
@@ -159,14 +160,14 @@ button:focus {
 	drumObj.kick = new AudioBufferLoader('kick', '/sound/kick.m4a');
 	drumObj.kick.load();
 
-	drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
-	drumObj.cymbal.load();
+	// drumObj.cymbal = new AudioBufferLoader('cymbal', '/sound/cymbal.m4a');
+	// drumObj.cymbal.load();
 
-	drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
-	drumObj.hat.load();
+	// drumObj.hat = new AudioBufferLoader('hat', '/sound/hat.m4a');
+	// drumObj.hat.load();
 
-	drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
-	drumObj.snare.load();
+	// drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
+	// drumObj.snare.load();
 	
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
