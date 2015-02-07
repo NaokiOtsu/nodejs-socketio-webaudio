@@ -63,13 +63,13 @@ button:focus {
 	color: #ffff00;
 	text-align: center;
 	width: 200px;
-	margin-left: -100px;
+	margin: -29px 0 0 -100px;
 	padding: 20px 0;
 	position: absolute;
-	top: 30px;
+	top: 50%;
 	left: 50%;
 	pointer-events: none;
-	background-color: rgba(0,0,0,0.8);
+	background-color: rgba(0,0,0,0.6);
 	-webkit-border-radius: 5px;
 }
 #result.popup { -webkit-animation: popup 0.6s linear 1; }
@@ -248,7 +248,7 @@ button:focus {
 		
 		// ポップアップを表示
 		result.className = "popup";
-		result.innerHTML = id;
+		result.innerHTML = id + '!';
 		result.addEventListener("webkitAnimationEnd", function(){
 			result.className = "";
 		});
