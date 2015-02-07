@@ -139,11 +139,6 @@ button:focus {
 							return;
 						}
 						_this.buffer = buffer;
-						
-						// _this.source = _this.context.createBufferSource();
-						// _this.source.buffer = _this.buffer;
-						// _this.source.connect(_this.context.destination);
-						
 						_this.events();
 					},
 					function(error) {
@@ -162,10 +157,6 @@ button:focus {
 			var _this = this;
 			var context = _this.context;
 			
-			// _this.source = context.createBufferSource().start(0);;
-			// _this.source.buffer = _this.buffer;
-			// _this.source.connect(context.destination);
-				
 			_this.ele.addEventListener(eventNames.start, function() {
 				this.className = '';
 				this.className = 'tap';
@@ -205,10 +196,12 @@ button:focus {
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		drumObj[id].source = drumObj[id].context.createBufferSource();
-		drumObj[id].source.buffer = drumObj[id].buffer;
-		drumObj[id].source.connect(drumObj[id].context.destination);
-		drumObj[id].source.start(0);
+		setTimeout(function(){
+			drumObj[id].source = drumObj[id].context.createBufferSource();
+			drumObj[id].source.buffer = drumObj[id].buffer;
+			drumObj[id].source.connect(drumObj[id].context.destination);
+			drumObj[id].source.start(0);
+		}, 100);
 		
 		// ポップアップを表示
 		result.className = "popup";
