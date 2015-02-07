@@ -231,6 +231,7 @@ button:focus {
 		// サーバーから返されたid(buttonのid名)から音声を再生
 		// start()だけを複数回実行出来ない仕様なので、毎回createBufferSource()してから再生
 		drumObj[id].source = drumObj[id].context.createBufferSource();
+		drumObj[id].source.buffer = drumObj[id].buffer;
 		drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
 		
