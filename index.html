@@ -10,6 +10,8 @@
 html { height: 100%; }
 body {
 	font-family: ArialMT,"Hiragino Kaku Gothic ProN","ヒラギノ角ゴ ProN W3","メイリオ",sans-serif;
+	margin: 0;
+	padding: 0;
 	height: 100%;
 	-webkit-text-size-adjust: 100%;
 	 -webkit-tap-highlight-color: transparent;
@@ -43,18 +45,18 @@ button:focus {
 }
 #cymbal {
 	position: absolute;
-	top: 0;
-	left: 0;
+	top: 10px;
+	left: 10px;
 }
 #hat {
 	position: absolute;
 	top: 130px;
-	left: 0;
+	left: 10px;
 }
 #snare {
 	position: absolute;
 	top: 130px;
-	right: 0;
+	right: 10px;
 }
 #result {
 	opacity: 0;
@@ -76,6 +78,29 @@ button:focus {
 	5% { opacity: 1; -webkit-transform: scale3d(1, 1, 1); -webkit-transform: scale(1, 1); }
 	100% { opacity: 0; -webkit-transform: scale3d(1.1, 1.1, 1.1); -webkit-transform: scale(1.1, 1.1); }
 }
+#start {
+	width: 100px;
+	padding: 10px 0;
+	margin-left: -50px;
+	text-align: center;
+	color: #fff;
+	background-color: #333;
+	position: absolute;
+	top: 50px;
+	left: 50%;
+	-webkit-border-radius: 5px;
+}
+.display-none { display: none; }
+#filter {
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	background-color: rgba(0,0,0,0.5);
+}
 
 </style>
 </head>
@@ -86,7 +111,8 @@ button:focus {
 	<button id="hat"> hat </button>
 	<button id="snare"> snare </button>
 	<div id="result"></div>
-	<button id="start">start!</button>
+	<!-- <div id="filter"></div>
+	<div id="start">start!</div> -->
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -109,11 +135,16 @@ button:focus {
 	};
 	
 	var result = document.getElementById('result');　// ポップアップ用DOM
-	var start = document.getElementById('start');
 	
-	start.addEventListener('click', function(){
-		drumObj.kick.play();
-	});
+	// var start = document.getElementById('start');
+	// start.addEventListener('click', function(){
+	// 	drumObj.kick.play();
+	// 	drumObj.cymbal.play();
+	// 	drumObj.hat.play();
+	// 	drumObj.snare.play();
+	// 	start.className = "display-none";
+	// 	document.getElementById('filter').className = "display-none";
+	// });
 
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -213,10 +244,7 @@ button:focus {
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		drumObj[id].source = drumObj[id].context.createBufferSource();
-		drumObj[id].source.buffer = drumObj[id].buffer;
-		drumObj[id].source.connect(drumObj[id].context.destination);
-		drumObj[id].source.start(0);
+		drumObj[id].play();
 		
 		// ポップアップを表示
 		result.className = "popup";
