@@ -191,9 +191,9 @@ button:focus {
 		play: function(){
 			var _this = this;
 			
-			_this.source = context.createBufferSource();
+			_this.source = _this.context.createBufferSource();
 			_this.source.buffer = _this.buffer;
-			_this.source.connect(context.destination);
+			_this.source.connect(_this.context.destination);
 			_this.source.start(0);
 		}
 	};
