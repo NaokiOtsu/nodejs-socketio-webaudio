@@ -228,9 +228,9 @@ button:focus {
 	// サーバーから "from_server" が送られてくるのを監視
 	socketio.on("from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		drumObj[id].source = drumObj[id].context.createBufferSource();
-		drumObj[id].source.buffer = drumObj[id].buffer;
-		drumObj[id].source.connect(drumObj[id].context.destination);
+		// drumObj[id].source = drumObj[id].context.createBufferSource();
+		// drumObj[id].source.buffer = drumObj[id].buffer;
+		// drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
 		
 		// ポップアップを表示
@@ -244,7 +244,7 @@ button:focus {
 	// スプラッシュ画像を押した時に音声データをロード
 	// iPhone/Androidで最初の音声ロードだけはユーザーアクションが必要な制約がある為
 	splashImage.addEventListener(eventNames.start, function(){
-		// 音声データのロード
+		// 音声データをセット
 		drumObj.kick.set();
 		drumObj.cymbal.set();
 		drumObj.hat.set();
