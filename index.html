@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>NodeJS + Express + Socket.io + WebAudio + Heroku</title>
+<title>NodeJS + Express + Socket.io + WebAudio on Heroku</title>
 <style>
 
 html { height: 100%; }
@@ -185,7 +185,7 @@ button:focus {
 				this.className = 'tap';
 				result.className = "";
 				
-				// socket.ioで全デバイスで同期させる為、タップ時には再生せずサーバーからの返答時に再生する
+				// socket.ioで全デバイスで同期させる為、タップイベントでは再生せずサーバーからの返答時に再生
 				// var source = context.createBufferSource();
 				// source.buffer = _this.buffer;
 				// source.connect(context.destination);
@@ -226,25 +226,8 @@ button:focus {
 	drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
 	drumObj.snare.load();
 	
-	// サーバーから "from_server" が送られてくるのを監視
-	socketio.on("from_server", function(id){
-		// サーバーから返されたid(buttonのid名)から音声を再生
-		// start()だけを複数回実行出来ない仕様なので、毎回createBufferSource()してから再生
-		drumObj[id].source = drumObj[id].context.createBufferSource();
-		drumObj[id].source.buffer = drumObj[id].buffer;
-		drumObj[id].source.connect(drumObj[id].context.destination);
-		drumObj[id].source.start(0);
-		
-		// ポップアップを表示
-		result.className = "popup";
-		result.innerHTML = id + '!';
-		result.addEventListener("webkitAnimationEnd", function(){
-			result.className = "";
-		});
-	});
-	
 	// スプラッシュ画像を押した時に音声データをロード
-	// iPhone/Androidで最初の音声ロードだけはユーザーアクションが必要な制約がある為
+	// iPhone/Androidで最初の音声ロードだけはユーザーアクションが必要な制約がある為(PCにはこの制約はなさそう)
 	splashImage.addEventListener(eventNames.start, function(){
 		// 音声データをセット
 		drumObj.kick.set();
@@ -256,6 +239,23 @@ button:focus {
 		this.className = 'fade-out';
 		this.addEventListener('webkitAnimationEnd', function(){
 			this.className = 'none';
+		});
+	});
+	
+	// サーバーから "from_server" が送られてくるのを監視
+	socketio.on("from_server", function(id){
+		// サーバーから返されたid(buttonのid名)から音声を再生
+		// start()だけを複数回実行出来ない仕様のようなので、毎回createBufferSource()してから再生
+		drumObj[id].source = drumObj[id].context.createBufferSource();
+		drumObj[id].source.buffer = drumObj[id].buffer;
+		drumObj[id].source.connect(drumObj[id].context.destination);
+		drumObj[id].source.start(0);
+		
+		// ポップアップを表示
+		result.className = "popup";
+		result.innerHTML = id + '!';
+		result.addEventListener("webkitAnimationEnd", function(){
+			result.className = "";
 		});
 	});
 	

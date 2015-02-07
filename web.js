@@ -1,9 +1,11 @@
+// express + socket.io
 var express = require('express');
 	app = express(),
 	server = require('http').createServer(app),
 	path = require('path'),
 	io = require('socket.io').listen(server);
 
+// 
 server.listen(process.env.PORT || 8000);
 
 // 静的ファイルの場所を指定する(この配下で、CSS,JS,IMG,音声ファイルなどの静的ファイルが使用可能に)
@@ -21,7 +23,7 @@ app.get('/', function (req, res) {
 //   io.set("polling duration", 10); 
 // });
 
-// io.set('log level', 1); // 自動で出るデバック情報を出さない(ローカルでデバックする際に使用)
+// io.set('log level', 1); // デフォルトは自動で出るデバック情報を出さない(ローカルでデバックする際に使用)
 
 // クライアント(index.html)からの接続を監視
 io.sockets.on("connection", function (socket) {
@@ -35,7 +37,7 @@ io.sockets.on("connection", function (socket) {
 		// 接続しているソケット以外全てにidを送信する
 		//socket.broadcast.emit("from_server", id);
 		
-		// 接続しているソケット含めて全部にidを送信する
+		// 接続しているソケット含めて全部にidを送信する(送ってきたクライアント含めて全てのクライアントに送信)
 		io.sockets.emit("from_server", id);
 	});
 });
