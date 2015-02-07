@@ -196,12 +196,10 @@ button:focus {
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		setTimeout(function(){
-			drumObj[id].source = drumObj[id].context.createBufferSource();
-			drumObj[id].source.buffer = drumObj[id].buffer;
-			drumObj[id].source.connect(drumObj[id].context.destination);
-			drumObj[id].source.start(0);
-		}, 100);
+		drumObj[id].source = drumObj[id].context.createBufferSource().start(0);
+		drumObj[id].source.buffer = drumObj[id].buffer;
+		drumObj[id].source.connect(drumObj[id].context.destination);
+		drumObj[id].source.start(0);
 		
 		// ポップアップを表示
 		result.className = "popup";
