@@ -163,8 +163,8 @@ button:focus {
 			var context = _this.context;
 			
 			_this.source = context.createBufferSource().start(0);;
-				_this.source.buffer = _this.buffer;
-				_this.source.connect(context.destination);
+				// _this.source.buffer = _this.buffer;
+				// _this.source.connect(context.destination);
 				
 			_this.ele.addEventListener(eventNames.start, function() {
 				this.className = '';
