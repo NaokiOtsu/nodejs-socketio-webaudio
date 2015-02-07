@@ -162,15 +162,19 @@ button:focus {
 			var _this = this;
 			var context = _this.context;
 			
+			_this.source = context.createBufferSource().start(0);;
+				_this.source.buffer = _this.buffer;
+				_this.source.connect(context.destination);
+				
 			_this.ele.addEventListener(eventNames.start, function() {
 				this.className = '';
 				this.className = 'tap';
 				result.className = "";
 				
-				_this.source = context.createBufferSource();
-				_this.source.buffer = _this.buffer;
-				_this.source.connect(context.destination);
-				_this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
+				// _this.source = context.createBufferSource().start(0);;
+				// _this.source.buffer = _this.buffer;
+				// _this.source.connect(context.destination);
+				// _this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
 				
 				// クライアントからサーバーにボタンidを送る
 				socketio.emit("emit_from_client", this.id);
