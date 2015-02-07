@@ -94,10 +94,11 @@ button:focus {
 	-webkit-background-size: 200px 35px;
 }
 .none { display: none; }
-#splash-image.fade-out { -webkit-animation: fade-out 0.2s linear 1; }
+#splash-image.fade-out { -webkit-animation: fade-out 0.3s linear 1; }
 @-webkit-keyframes fade-out {
-	0% { opacity: 1; }
-	100% { opacity: 0; }
+	0% { opacity: 1; -webkit-transform: scale(1); }
+	80% { opacity: 1; -webkit-transform: scale(0.95); }
+	100% { opacity: 0; -webkit-transform: scale(2); }
 }
 
 </style>
