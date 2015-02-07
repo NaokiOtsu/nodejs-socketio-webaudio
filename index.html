@@ -199,9 +199,7 @@ button:focus {
 		// サーバーから返されたid(buttonのid名)から音声を再生
 		var source = drumObj[id].context.createBufferSource();
 		source.buffer = drumObj[id].buffer;
-		alert("source.buffer: "+source.buffer);
 		source.connect(drumObj[id].context.destination);
-		alert("drumObj[id].context.destination: "+drumObj[id].context.destination);
 		source.start(0);
 		
 		// ポップアップを表示
