@@ -217,6 +217,9 @@ button:focus {
 		// ポップアップを表示
 		resultWrapper.className = "popup";
 		resultWrapper.innerHTML = id;
+		resultWrapper.addEventListener("webkitAnimationEnd", function(){
+			resultWrapper.className = "";
+		});
 	});
 		
 }(this));
