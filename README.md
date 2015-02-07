@@ -15,7 +15,7 @@ node web.js
 ```
 access to [http://localhost:8000](http://localhost:8000)  
 
-※ index.htmlのこちらのコメントを外してローカルにconnectさせる(Line119)  
+※ index.htmlのこちらのコメントを外してローカルにconnectさせる(Line120)  
 ```
 // var socketio = io.connect('http://localhost:8000');
 ```
