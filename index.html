@@ -163,7 +163,7 @@ button:focus {
 				result.className = "";
 				
 				_this.source = context.createBufferSource();
-				_this.source.buffer = _this.buffer;
+				// _this.source.buffer = _this.buffer;
 				// _this.source.connect(context.destination);
 				// source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
 				
@@ -197,7 +197,7 @@ button:focus {
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
 		// var source = drumObj[id].context.createBufferSource();
-		// source.buffer = drumObj[id].buffer;
+		drumObj[id].source.buffer = drumObj[id].buffer;
 		drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
 		
