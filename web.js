@@ -15,7 +15,7 @@ app.get('/', function (req, res) {
   res.sendFile(__dirname + '/index.html');
 });
 
-// Herokuは下記を入れないとSocket.ioが動かない情報がWebにあったが、なくても動くもよう(WebSocketに対応されたからか)
+// Herokuは下記を入れないとSocket.ioが動かない情報がWebにあったが、なくても動くよう(WebSocketに対応されたからか)
 // io.configure(function () { 
 //   io.set("transports", ["xhr-polling"]); 
 //   io.set("polling duration", 10); 
@@ -25,17 +25,17 @@ app.get('/', function (req, res) {
 
 // クライアント(index.html)からの接続を監視
 io.sockets.on("connection", function (socket) {
-	// クライアントから "emit_from_client" が送られてきたら
-	socket.on("emit_from_client", function (id) {
+	// クライアントから "from_client" が送られてきたら
+	socket.on("from_client", function (id) {
 		// console.log(id);
 		
 		// 接続しているソケットのみにidを送信する
-		// socket.emit("emit_from_server", id);
+		// socket.emit("from_server", id);
 		
 		// 接続しているソケット以外全てにidを送信する
-		//socket.broadcast.emit("emit_from_server", id);
+		//socket.broadcast.emit("from_server", id);
 		
 		// 接続しているソケット含めて全部にidを送信する
-		io.sockets.emit("emit_from_server", id);
+		io.sockets.emit("from_server", id);
 	});
 });

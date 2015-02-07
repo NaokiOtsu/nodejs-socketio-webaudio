@@ -117,9 +117,7 @@ button:focus {
 	
 	// socket.ioに接続する
 	// var socketio = io.connect('http://localhost:8000'); // localで試す時
-	// var socketio = io.connect('http://172.23.81.22:8000'); // CORP 
-	// var socketio = io.connect('http://172.25.0.71:8000'); // PUB
-	var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/');
+	var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/'); // Herokuで試す時
 	
 	var drumObj = {}; // ドラムのbutton、音声情報を格納するObject
 	
@@ -131,19 +129,8 @@ button:focus {
 		click: 'click'
 	};
 	
-	var result = document.getElementById('result');　// ポップアップ用DOM
-
-	var start = document.getElementById('splash-image');
-	start.addEventListener(eventNames.start, function(){
-		drumObj.kick.play();
-		drumObj.cymbal.play();
-		drumObj.hat.play();
-		drumObj.snare.play();
-		this.className = 'fade-out';
-		this.addEventListener('webkitAnimationEnd', function(){
-			this.className = 'none';
-		});
-	});
+	var result = document.getElementById('result');　// ポップアップ用
+	var splashImage = document.getElementById('splash-image'); // スプラッシュ画像
 	
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -198,13 +185,14 @@ button:focus {
 				this.className = 'tap';
 				result.className = "";
 				
-				// _this.source = context.createBufferSource();
-				// _this.source.buffer = _this.buffer;
-				// _this.source.connect(context.destination);
-				// _this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
+				// socket.ioで全デバイスで同期させる為、タップ時には再生せずサーバーからの返答時に再生する
+				// var source = context.createBufferSource();
+				// source.buffer = _this.buffer;
+				// source.connect(context.destination);
+				// source.start(0); 
 				
 				// クライアントからサーバーにボタンidを送る
-				socketio.emit("emit_from_client", this.id);
+				socketio.emit("from_client", this.id);
 			});
 			_this.ele.addEventListener(eventNames.end, function() {
 				this.className = '';
@@ -222,7 +210,7 @@ button:focus {
 			_this.source = _this.context.createBufferSource();
 			_this.source.buffer = _this.buffer;
 			_this.source.connect(_this.context.destination);
-			_this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
+			_this.source.start(0);
 		}
 	};
 	
@@ -238,8 +226,8 @@ button:focus {
 	drumObj.snare = new AudioBufferLoader('snare', '/sound/snare.m4a');
 	drumObj.snare.load();
 	
-	// サーバーから "emit_from_server" が送られてくるのを監視
-	socketio.on("emit_from_server", function(id){
+	// サーバーから "from_server" が送られてくるのを監視
+	socketio.on("from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
 		drumObj[id].source = drumObj[id].context.createBufferSource();
 		drumObj[id].source.buffer = drumObj[id].buffer;
@@ -253,7 +241,23 @@ button:focus {
 			result.className = "";
 		});
 	});
+	
+	// スプラッシュ画像を押した時に音声データをロード
+	// iPhone/Androidで最初のロードだけはユーザーアクションが必要な制約がある為
+	splashImage.addEventListener(eventNames.start, function(){
+		// 音声データのロード
+		drumObj.kick.play();
+		drumObj.cymbal.play();
+		drumObj.hat.play();
+		drumObj.snare.play();
 		
+		// スプラッシュ画像をフェードアウト
+		this.className = 'fade-out';
+		this.addEventListener('webkitAnimationEnd', function(){
+			this.className = 'none';
+		});
+	});
+	
 }(this));
 </script>
 </body>
