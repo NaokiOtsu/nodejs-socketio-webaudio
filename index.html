@@ -204,6 +204,7 @@ button:focus {
 			_this.loadBuffer(_this.url);
 		},
 		
+		// 音声データをセット
 		set: function () {
 			var _this = this;
 			
@@ -228,9 +229,9 @@ button:focus {
 	// サーバーから "from_server" が送られてくるのを監視
 	socketio.on("from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		// drumObj[id].source = drumObj[id].context.createBufferSource();
-		// drumObj[id].source.buffer = drumObj[id].buffer;
-		// drumObj[id].source.connect(drumObj[id].context.destination);
+		// start()だけを複数回実行出来ない仕様なので、毎回createBufferSource()してから再生
+		drumObj[id].source = drumObj[id].context.createBufferSource();
+		drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
 		
 		// ポップアップを表示
