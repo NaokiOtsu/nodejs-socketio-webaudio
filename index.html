@@ -56,7 +56,7 @@ button:focus {
 	top: 130px;
 	right: 0;
 }
-#result-wrapper {
+#result {
 	opacity: 0;
 	color: #ffff00;
 	text-align: center;
@@ -70,25 +70,11 @@ button:focus {
 	background-color: rgba(0,0,0,0.5);
 	-webkit-border-radius: 5px;
 }
-#result-wrapper.popup {
-	-webkit-animation: popup 0.6s linear 1;
-}
+#result.popup { -webkit-animation: popup 0.6s linear 1; }
 @-webkit-keyframes popup {
-	0% {
-		opacity: 0;
-		-webkit-transform: scale3d(0.9, 0.9, 0.9);
-		-webkit-transform: scale(0.9, 0.9); 
-	}
-	5% {
-		opacity: 1;
-		-webkit-transform: scale3d(1, 1, 1);
-		-webkit-transform: scale(1, 1);
-	}
-	100% {
-		opacity: 0;
-		-webkit-transform: scale3d(1.1, 1.1, 1.1);
-		-webkit-transform: scale(1.1, 1.1); 
-	}
+	0% { opacity: 0; -webkit-transform: scale3d(0.9, 0.9, 0.9); -webkit-transform: scale(0.9, 0.9); }
+	5% { opacity: 1; -webkit-transform: scale3d(1, 1, 1); -webkit-transform: scale(1, 1); }
+	100% { opacity: 0; -webkit-transform: scale3d(1.1, 1.1, 1.1); -webkit-transform: scale(1.1, 1.1); }
 }
 
 </style>
@@ -99,7 +85,7 @@ button:focus {
 	<button id="cymbal"> cymbal </button>
 	<button id="hat"> hat </button>
 	<button id="snare"> snare </button>
-	<div id="result-wrapper"></div>
+	<div id="result"></div>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -107,7 +93,8 @@ button:focus {
 	
 	// socket.ioに接続する
 	// var socketio = io.connect('http://localhost:8000'); // localで試す時
-	// var socketio = io.connect('http://172.23.81.22:8000');
+	// var socketio = io.connect('http://172.23.81.22:8000'); // CORP 
+	// var socketio = io.connect('http://172.25.0.71:8000'); // PUB
 	var socketio = io.connect('https://nodejs-socketio-webaudio.herokuapp.com/');
 	
 	var drumObj = {}; // ドラムのbutton、音声情報を格納するObject
@@ -120,7 +107,7 @@ button:focus {
 		click: 'click'
 	};
 	
-	var resultWrapper = document.getElementById('result-wrapper');
+	var result = document.getElementById('result');　// ポップアップ用DOM
 
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -173,7 +160,7 @@ button:focus {
 			_this.ele.addEventListener(eventNames.start, function() {
 				this.className = '';
 				this.className = 'tap';
-				resultWrapper.className = "";
+				result.className = "";
 				
 				// socket.ioで全デバイスで同期させる為、ここでは再生しない
 				// var source = context.createBufferSource();
@@ -212,14 +199,16 @@ button:focus {
 		// サーバーから返されたid(buttonのid名)から音声を再生
 		var source = drumObj[id].context.createBufferSource();
 		source.buffer = drumObj[id].buffer;
+		alert("source.buffer: "+source.buffer);
 		source.connect(drumObj[id].context.destination);
+		alert("drumObj[id].context.destination: "+drumObj[id].context.destination);
 		source.start(0);
 		
 		// ポップアップを表示
-		resultWrapper.className = "popup";
-		resultWrapper.innerHTML = id;
-		resultWrapper.addEventListener("webkitAnimationEnd", function(){
-			resultWrapper.className = "";
+		result.className = "popup";
+		result.innerHTML = id;
+		result.addEventListener("webkitAnimationEnd", function(){
+			result.className = "";
 		});
 	});
 		
