@@ -129,8 +129,8 @@ button:focus {
 		click: 'click'
 	};
 	
-	var result = document.getElementById('result');　// ポップアップ用
-	var splashImage = document.getElementById('splash-image'); // スプラッシュ画像
+	var result = document.getElementById('result'),　// ポップアップ用
+		splashImage = document.getElementById('splash-image'); // スプラッシュ画像
 	
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -189,7 +189,7 @@ button:focus {
 				// var source = context.createBufferSource();
 				// source.buffer = _this.buffer;
 				// source.connect(context.destination);
-				// source.start(0); 
+				// source.start(0);
 				
 				// クライアントからサーバーにボタンidを送る
 				socketio.emit("from_client", this.id);
@@ -243,7 +243,7 @@ button:focus {
 	});
 	
 	// スプラッシュ画像を押した時に音声データをロード
-	// iPhone/Androidで最初のロードだけはユーザーアクションが必要な制約がある為
+	// iPhone/Androidで最初の音声ロードだけはユーザーアクションが必要な制約がある為
 	splashImage.addEventListener(eventNames.start, function(){
 		// 音声データのロード
 		drumObj.kick.play();
