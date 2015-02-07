@@ -86,6 +86,7 @@ button:focus {
 	<button id="hat"> hat </button>
 	<button id="snare"> snare </button>
 	<div id="result"></div>
+	<button id="start">start!</button>
 
 <script src="/socket.io/socket.io.js"></script>
 <script>
@@ -108,6 +109,11 @@ button:focus {
 	};
 	
 	var result = document.getElementById('result');　// ポップアップ用DOM
+	var start = document.getElementById('start');
+	
+	start.addEventListener('click', function(){
+		drumObj.kick.play();
+	});
 
 	function AudioBufferLoader(ele, url) {
 		window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -167,6 +173,8 @@ button:focus {
 				// _this.source.connect(context.destination);
 				// _this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
 				
+				_this.play();
+				
 				// クライアントからサーバーにボタンidを送る
 				socketio.emit("emit_from_client", this.id);
 			});
@@ -178,6 +186,13 @@ button:focus {
 		load: function() {
 			var _this = this;
 			_this.loadBuffer(_this.url);
+		},
+		
+		play: function(){
+			_this.source = context.createBufferSource();
+			_this.source.buffer = _this.buffer;
+			_this.source.connect(context.destination);
+			_this.source.start(0);
 		}
 	};
 	
@@ -196,7 +211,7 @@ button:focus {
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		drumObj[id].source = drumObj[id].context.createBufferSource().start(0);
+		drumObj[id].source = drumObj[id].context.createBufferSource();
 		drumObj[id].source.buffer = drumObj[id].buffer;
 		drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
