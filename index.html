@@ -140,9 +140,9 @@ button:focus {
 						}
 						_this.buffer = buffer;
 						
-						_this.source = _this.context.createBufferSource();
-						_this.source.buffer = _this.buffer;
-						_this.source.connect(_this.context.destination);
+						// _this.source = _this.context.createBufferSource();
+						// _this.source.buffer = _this.buffer;
+						// _this.source.connect(_this.context.destination);
 						
 						_this.events();
 					},
@@ -167,10 +167,10 @@ button:focus {
 				this.className = 'tap';
 				result.className = "";
 				
-				// _this.source = context.createBufferSource();
-				// _this.source.buffer = _this.buffer;
-				// _this.source.connect(context.destination);
-				// _this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
+				_this.source = context.createBufferSource();
+				_this.source.buffer = _this.buffer;
+				_this.source.connect(context.destination);
+				_this.source.start(0); // socket.ioで全デバイスで同期させる為、ここでは再生しない
 				
 				// クライアントからサーバーにボタンidを送る
 				socketio.emit("emit_from_client", this.id);
@@ -201,9 +201,9 @@ button:focus {
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		drumObj[id].source = drumObj[id].context.createBufferSource();
-		drumObj[id].source.buffer = drumObj[id].buffer;
-		drumObj[id].source.connect(drumObj[id].context.destination);
+		// drumObj[id].source = drumObj[id].context.createBufferSource();
+		// drumObj[id].source.buffer = drumObj[id].buffer;
+		// drumObj[id].source.connect(drumObj[id].context.destination);
 		drumObj[id].source.start(0);
 		
 		// ポップアップを表示
