@@ -242,7 +242,10 @@ button:focus {
 	// サーバーから "emit_from_server" が送られてくるのを監視
 	socketio.on("emit_from_server", function(id){
 		// サーバーから返されたid(buttonのid名)から音声を再生
-		drumObj[id].play();
+		_this.source = _this.context.createBufferSource();
+		_this.source.buffer = _this.buffer;
+		_this.source.connect(_this.context.destination);
+		_this.source.start(0);
 		
 		// ポップアップを表示
 		result.className = "popup";
