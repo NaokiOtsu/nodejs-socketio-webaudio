@@ -204,13 +204,12 @@ button:focus {
 			_this.loadBuffer(_this.url);
 		},
 		
-		play: function () {
+		set: function () {
 			var _this = this;
 			
 			_this.source = _this.context.createBufferSource();
 			_this.source.buffer = _this.buffer;
 			_this.source.connect(_this.context.destination);
-			// _this.source.start(0);
 		}
 	};
 	
@@ -246,10 +245,10 @@ button:focus {
 	// iPhone/Androidで最初の音声ロードだけはユーザーアクションが必要な制約がある為
 	splashImage.addEventListener(eventNames.start, function(){
 		// 音声データのロード
-		drumObj.kick.play();
-		drumObj.cymbal.play();
-		drumObj.hat.play();
-		drumObj.snare.play();
+		drumObj.kick.set();
+		drumObj.cymbal.set();
+		drumObj.hat.set();
+		drumObj.snare.set();
 		
 		// スプラッシュ画像をフェードアウト
 		this.className = 'fade-out';
